@@ -1,24 +1,23 @@
 <template>
-  <div class="home">
-    <Navbar/>
-    <Feed/>
+<v-main>
+  <div class="post-view">
+      {{this.$route.params.id}}
   </div>
+</v-main>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import Feed from '@/components/Feed.vue'
 
 export default Vue.extend({
   name: 'Home',
   components: {
-    Feed
   }
 })
 </script>
 
 <style>
-  .home {
+  .post-view {
     display: flex;
   }
 </style>
