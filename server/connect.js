@@ -4,7 +4,7 @@ var mongoose_1 = require("mongoose");
 exports["default"] = (function (db) {
     var connect = function () {
         console.log('[DB] Connecting...');
-        mongoose_1["default"]
+        mongoose_1
             .connect(db, { useNewUrlParser: true })
             .then(function () {
             return console.info("[DB] Successfully connected!");
@@ -14,5 +14,5 @@ exports["default"] = (function (db) {
         });
     };
     connect();
-    mongoose_1["default"].connection.on('disconnected', connect);
+    mongoose_1.connection.on('disconnected', connect);
 });
