@@ -1,6 +1,14 @@
-import * as express from 'express'
+import express from 'express'
 
 const app = express();
+
+app.use(express.json());
+
+//Routes
+import authRoute from './routes/auth';
+
+
+app.use('/api/auth', authRoute);
 
 app.get('/', (req,res) => {
     res.send("API working.");
