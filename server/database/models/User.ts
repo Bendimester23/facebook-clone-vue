@@ -19,6 +19,8 @@ const userSchema = new mongoose.Schema({
         max: 1024,
         required: true
     }
+},{
+    timestamps: true
 });
 
 export default mongoose.model('User',userSchema);
