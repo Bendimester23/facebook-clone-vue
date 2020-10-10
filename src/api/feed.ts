@@ -1,4 +1,8 @@
-export default function fetch (uid: string): PostData[] {
+const API_URL = 'http://localhost:20004';
+
+export default API_URL;
+
+export function fetch (uid: string): PostData[] {
   return []
 }
 
@@ -14,4 +18,14 @@ export class PostData {
       this.content = content
       this.postedAt = postedAt
     }
+}
+
+import axios from 'axios';
+
+export async function getPost(id:String) {
+  const resp = await axios.get(API_URL+'/api/posts/post/'+id,{
+    headers: {
+      "auth-token": ""
+    }
+  })
 }

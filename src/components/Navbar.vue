@@ -15,27 +15,19 @@
           width="40"
         />
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
+        <p class="brand-name">Vuetify</p>
       </div>
     </router-link>
 
       <v-spacer></v-spacer>
-
+      <router-link to="/auth/login">
       <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
         text
       >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
+        <span class="mr-2">Bejelentkezés</span>
+        <v-icon>fas fa-sign-in-alt</v-icon>
       </v-btn>
+    </router-link>
     </v-app-bar>
 </template>
 
@@ -54,5 +46,10 @@ export default Vue.extend({
 </script>
 
 <style>
-
+  .brand-name {
+    z-index: 999;
+    color: #f5f6fa;
+    padding-top: 15px;
+    font-size: 35px;
+  }
 </style>

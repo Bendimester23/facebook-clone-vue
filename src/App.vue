@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <Navbar/>
-    <router-view>
+    <router-view class="mainn">
     </router-view>
   </v-app>
 </template>
@@ -21,3 +21,6 @@ export default Vue.extend({
   })
 })
 </script>
+
+<style>
+</style>
