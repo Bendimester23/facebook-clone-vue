@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     prefferedTheme: {
-        type: boolean,
+        type: Boolean,
         required: true
     },
     groups: {

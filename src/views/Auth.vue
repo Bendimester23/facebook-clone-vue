@@ -9,6 +9,8 @@
 import Vue from 'vue'
 import Login from '@/components/Login.vue'
 import SignIn from '@/components/SignIn.vue'
+import store from '@/store'
+import router from '@/router'
 
 export default Vue.extend({
   name: 'Auth',
@@ -22,6 +24,11 @@ export default Vue.extend({
     },
     isRegister () {
       return this.$route.params.type === 'register'
+    }
+  },
+  mounted: () => {
+    if (store.state.isLoggedIn) {
+      window.location.assign(router.resolve({ path: '/home' }).href)
     }
   }
 })

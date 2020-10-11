@@ -7,15 +7,16 @@ export default function verify(req, res, next: NextFunction) {
 
     try {
         const verified : any = jwt.verify(token, process.env.TOKEN_SECRET);
+        
         let expire : number = verified.date+300000;
         if (expire < Date.now()) {
             console.log('expired');
-            return res.status(403).send("Acces Denied: Expired token!");
+            return res.status(403).send("Error: Acces Denied: Expired token!");
         }
         req.user = verified;
         next();
     } catch (error) {
         console.error(error);
-        res.status(403).send("Acces Denied");
+        res.status(403).send("Error: Acces Denied");
     }
 }

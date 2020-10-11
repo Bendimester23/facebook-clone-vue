@@ -9,6 +9,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import Navbar from '@/components/Navbar.vue'
+import store from './store'
 
 export default Vue.extend({
   name: 'App',
@@ -18,7 +19,12 @@ export default Vue.extend({
 
   data: () => ({
     //
-  })
+  }),
+  methods: {
+  },
+  created () {
+    store.commit('setTheme', this.$cookies.get('theme') === 'dark')
+  }
 })
 </script>
 

@@ -1,10 +1,17 @@
 import express from 'express'
 import morgan from 'morgan';
+import bodyParser from 'body-parser'
 
 const app = express();
 
-app.use(express.json());
+app.use(bodyParser.json())
 app.use(morgan("dev"));
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, auth-token");
+    next();
+  });
 
 //Routes
 import authRoute from './routes/auth';

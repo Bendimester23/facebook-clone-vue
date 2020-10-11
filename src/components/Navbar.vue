@@ -44,7 +44,8 @@ export default Vue.extend({
     )
   },
   computed: {
-    color: () => store.state.color
+    color: () => store.state.color,
+    textColor: () => store.state.textColor
   }
 })
 </script>

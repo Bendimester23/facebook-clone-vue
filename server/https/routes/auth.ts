@@ -50,8 +50,9 @@ router.get('/', (req,res) => {
 });
 
 router.get('/register', async (req,res) => {
+    res.setHeader('Access-Control-Allow-Origin','*');
 
-    regSchema.validate(req.body)
+    regSchema.validate(req.query)
     .catch(err => {
         res.status(400).send(err.toString());
         console.timeEnd('reg');
@@ -61,12 +62,14 @@ router.get('/register', async (req,res) => {
     const salt = await crypt.genSalt(10);
 
     let user = new User({
-        name: req.body.username,
-        email: req.body.email,
-        password: await crypt.hash(req.body.password,salt)
+        name: req.query.username,
+        email: req.query.email,
+        password: await crypt.hash('' + req.query.password,salt),
+        prefferedTheme: true,
+        groups: []
     })
 
-    const nameExist = await User.exists({name: req.body.username});
+    const nameExist = await User.exists({name: req.query.username});
     if (nameExist) {
         try {
             res.json({
@@ -95,14 +98,21 @@ router.get('/register', async (req,res) => {
     }
 });
 
+router.options('/login', async (req,res) => {
+    res.header('Access-Control-Allow-Origin','*');
+    res.header("Access-Control-Allow-Methods", '*').send('');
+})
+
 router.post('/login', async (req,res) => {
-    loginSchema.validate(req.body)
+    res.header('Access-Control-Allow-Origin','*');
+
+    loginSchema.validate(req.query)
     .catch(err => {
         res.status(400).send(err.toString());
         return;
     });
 
-    let userRef = await User.findOne({name: req.body.username});
+    let userRef = await User.findOne({name: req.query.username});
 
     if (userRef == null || userRef == undefined) {
         try {
@@ -115,7 +125,7 @@ router.post('/login', async (req,res) => {
 
     if (match) {
         const token = jwt.sign({_id:userRef._id, date: Date.now()},process.env.TOKEN_SECRET);
-        res.header('auth-token',token).send(token);
+        res.header('auth-token',token).header('Access-Control-Allow-Origin','*').send(token);
     }else {
         res.status(403).send('WrongPassword');
     }
@@ -124,7 +134,9 @@ router.post('/login', async (req,res) => {
 });
 
 router.post('/refresh', verify, async (req,res) => {
-    refreshSchema.validate(req.body)
+    res.setHeader('Access-Control-Allow-Origin','*');
+
+    refreshSchema.validate(req.query)
     .catch(err => {
         res.status(400).send(err.toString());
         return;
@@ -132,32 +144,37 @@ router.post('/refresh', verify, async (req,res) => {
 
     const userData : any = jwt.verify(req.header('auth-token'), process.env.TOKEN_SECRET);
 
-    let userRef = await User.findOne({name: req.body.username});
+
+    let userRef = await User.findOne({name: req.query.username});
     let tokenUser = await User.findById(userData._id);
 
-    if (req.body.token != req.header('auth-token')) {
+    if (req.query.token != req.header('auth-token')) {
         try {
-            res.status(400).send("Username or token is wrong!");
+            res.status(400).send("Error: Username or token is wrong!");
         } catch (error) {}
         return;
     }
 
     if (userRef == null || userRef == undefined || tokenUser == null || tokenUser == undefined) {
         try {
-            res.status(400).send("Username or token is wrong!");
+            res.status(400).send("Error: Username or token is wrong!");
         } catch (error) {}
         return;
     }
 
     if (userRef.toObject().name != tokenUser.toObject().name) {
         try {
-            res.status(400).send("Username or token is wrong!");
+            res.status(400).send("Error: Username or token is wrong!");
         } catch (error) {}
         return;
     }
 
     const token = jwt.sign({_id:userRef._id, date: Date.now()},process.env.TOKEN_SECRET);
     res.header('auth-token',token).send(token);
+})
+
+router.get('/verify', verify, (req,res) => {
+    res.status(200).send('succes');
 })
 
 export default router;
