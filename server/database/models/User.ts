@@ -1,3 +1,4 @@
+import { boolean } from 'joi';
 import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
@@ -17,6 +18,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         min: 6,
         max: 1024,
+        required: true
+    },
+    prefferedTheme: {
+        type: boolean,
+        required: true
+    },
+    groups: {
+        type: Array,
         required: true
     }
 },{

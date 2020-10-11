@@ -1,7 +1,7 @@
 <template>
 <div class="landing">
     <section class="landing-main">
-        <h1>This is [insert project name here]!</h1>
+        <h1 class="landing-main-title">This is [insert project name here]!</h1>
     </section>
 </div>
 </template>
@@ -18,9 +18,11 @@ export default Vue.extend({
       padding-top: 64px;
       display: grid;
       grid-auto-rows: minmax(600px,600px);
+      margin: 0px;
   }
 
   .landing-main {
+      width: 100%;
       position: relative;
       display: flex;
       align-content: center;
@@ -28,7 +30,7 @@ export default Vue.extend({
       color: #f5f6fa;
   }
 
-  h1 {
+  .landing-main-title {
       width: 200px;
       align-self: center;
       flex-direction: column;

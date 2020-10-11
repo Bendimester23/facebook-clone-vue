@@ -23,4 +23,9 @@ export default Vue.extend({
 </script>
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300&display=swap');
+
+  * {
+    font-family: 'Raleway', sans-serif;
+  }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="auth">
       <Login v-if="isLogin()"/>
-      <SignIn v-if="!isLogin()"/>
+      <SignIn v-if="isRegister()"/>
   </div>
 </template>
 
@@ -18,8 +18,10 @@ export default Vue.extend({
   },
   methods: {
     isLogin () {
-      console.log(this.$route.params.type === 'login')
       return this.$route.params.type === 'login'
+    },
+    isRegister () {
+      return this.$route.params.type === 'register'
     }
   }
 })
@@ -28,5 +30,6 @@ export default Vue.extend({
 <style>
   .auth {
     display: flex;
+    padding-top: 64px;
   }
 </style>

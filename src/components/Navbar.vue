@@ -1,7 +1,7 @@
 <template>
   <v-app-bar
       app
-      color="primary"
+      :color="color"
       dark
     >
     <router-link to="/">
@@ -33,6 +33,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import store from '@/store'
 export default Vue.extend({
   name: 'Navbar',
   data: () => {
@@ -41,6 +42,9 @@ export default Vue.extend({
         asd: 'sad'
       }
     )
+  },
+  computed: {
+    color: () => store.state.color
   }
 })
 </script>
