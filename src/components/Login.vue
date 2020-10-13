@@ -34,9 +34,9 @@
 
           <v-btn
       color="warning"
-      @click="resetValidation"
+      @click="register"
     >
-      Mégsem
+      Regisztráció
     </v-btn>
       </v-form>
   </v-container>
@@ -45,6 +45,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { login } from '@/api/auth'
+import router from '@/router/index'
 
 export default Vue.extend({
   name: 'Login',
@@ -52,25 +53,39 @@ export default Vue.extend({
     show1: false,
     show2: true,
     rules: [
-      v => v.length > 0 || 'Kötelező.',
-      v => v.length >= 8 || 'Legalább 8 karakter.'
+      (v: string) => v.length > 0 || 'Kötelező.',
+      (v: string) => v.length >= 8 || 'Legalább 8 karakter.'
     ],
     valid: true,
     name: '',
     password: '',
     nameRules: [
-      v => !!v || 'Kötelező.',
-      v => (v && v.length >= 8) || 'Legalább 8 karakter.'
+      (v: string) => !!v || 'Kötelező.',
+      (v: string) => (v && v.length >= 8) || 'Legalább 8 karakter.'
     ]
   }),
+  computed: {
+    form (): Vue & { validate: () => boolean } & { reset: () => void } & { resetValidation: () => void } {
+      return this.$refs.form as Vue & { validate: () => boolean } & { reset: () => void } & { resetValidation: () => void }
+    },
+    usernameFL (): Vue & { value: string } {
+      return this.$refs.usernameFL as Vue & { value: string }
+    },
+    passwordFL (): Vue & { value: string } {
+      return this.$refs.passwordFL as Vue & { value: string }
+    }
+  },
   methods: {
     validate () {
-      this.$refs.form.validate()
-      login(this.$refs.usernameFL.value, this.$refs.passwordFL.value)
+      this.form.validate()
+      login(this.usernameFL.value, this.passwordFL.value)
     },
     resetValidation () {
-      this.$refs.form.resetValidation()
-      this.$refs.form.reset()
+      this.form.resetValidation()
+      this.form.reset()
+    },
+    register () {
+      window.location.assign(router.resolve({ path: '/auth/register' }).href)
     },
     click () {
       console.log('click')

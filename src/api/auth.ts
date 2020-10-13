@@ -1,5 +1,6 @@
 import store from '@/store'
-import API_URL from './feed'
+import { API_URL } from './feed'
+import router from '@/router/index'
 
 let token = ''
 let username = ''
@@ -56,13 +57,14 @@ export async function login (name: string, password: string): Promise<string> {
     method: 'post',
     body: JSON.stringify({ username: name, password: password }),
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
     }
   })
 
   const res = await resp.text()
 
-  if (res.includes('Email or password is wrong!' || res.startsWith('ValidationError'))) {
+  if (res.includes('Email or password is wrong!') || res.startsWith('ValidationError')) {
     return 'Error'
   }
   console.debug('Logged in with name: ' + name)
@@ -71,6 +73,34 @@ export async function login (name: string, password: string): Promise<string> {
   refresher = setInterval(async () => {
     console.debug('Refreshing token!')
     const resp = await refresh()
-  }, 5000)
+  }, 250000)
   return res
+}
+
+export async function register (name: string, email: string, password: string): Promise<string> {
+  console.log('Registering: ' + name)
+  const resp = await fetch(API_URL + '/api/auth/register?name=' + name + '&password=' + password + '&email=' + email, {
+    method: 'post',
+    body: JSON.stringify({ username: name, password: password }),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  const res = await resp.text()
+
+  if (res.startsWith('ValidationError') || res.startsWith('Error')) {
+    return 'Error'
+  }
+  console.debug('Registered with name: ' + name)
+
+  alert('Regisztráció sikeres. Kérem jelentkezzen be!')
+
+  window.location.assign(router.resolve({ path: '/auth/login' }).href)
+
+  return res
+}
+
+export function getToken (): string {
+  return token
 }

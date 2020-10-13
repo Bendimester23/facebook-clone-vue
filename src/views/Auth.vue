@@ -11,6 +11,7 @@ import Login from '@/components/Login.vue'
 import SignIn from '@/components/SignIn.vue'
 import store from '@/store'
 import router from '@/router'
+import { signOut } from '@/api/auth'
 
 export default Vue.extend({
   name: 'Auth',
@@ -28,7 +29,14 @@ export default Vue.extend({
   },
   mounted: () => {
     if (store.state.isLoggedIn) {
-      window.location.assign(router.resolve({ path: '/home' }).href)
+      if (router.currentRoute.params.type === 'signOut') {
+        signOut()
+          .then((res) => {
+            console.log(res)
+          })
+      } else {
+        window.location.assign(router.resolve({ path: '/home' }).href)
+      }
     }
   }
 })

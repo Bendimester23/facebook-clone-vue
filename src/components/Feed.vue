@@ -18,13 +18,13 @@ export default Vue.extend({
         asd: 'sad',
         posts: [
           {
-            id: 'hsiufuidsg',
+            id: '5f817b7fdceefa94571d03a4',
             author: 'asd',
             title: 'Test',
             content: 'gfhugfhogfhghjgjhgij'
           },
           {
-            id: 'hgjhg',
+            id: '5f817bfedceefa94571d03a5',
             author: 'asd2',
             title: 'Test 2',
             content: 'gfhugfhogfhghjgjhgij'

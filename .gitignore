@@ -3,7 +3,9 @@ node_modules
 /dist
 .js
 *.js
-
+/dist/*
+/docs
+/docs/*
 
 ./node_modules/*
 

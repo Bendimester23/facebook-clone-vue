@@ -4,7 +4,7 @@
       :color="color"
       dark
     >
-    <router-link to="/">
+    <router-link :to="homePath">
       <div class="d-flex align-center">
         <v-img
           alt="Vuetify Logo"
@@ -15,16 +15,16 @@
           width="40"
         />
 
-        <p class="brand-name">Vuetify</p>
+        <p class="brand-name">Pedellus</p>
       </div>
     </router-link>
 
       <v-spacer></v-spacer>
-      <router-link to="/auth/login">
+      <router-link :to="authPath">
       <v-btn
         text
       >
-        <span class="mr-2">Bejelentkezés</span>
+        <span class="mr-2">{{authBtnName}}</span>
         <v-icon>fas fa-sign-in-alt</v-icon>
       </v-btn>
     </router-link>
@@ -45,7 +45,10 @@ export default Vue.extend({
   },
   computed: {
     color: () => store.state.color,
-    textColor: () => store.state.textColor
+    textColor: () => store.state.textColor,
+    homePath: () => store.state.isLoggedIn ? '/home' : '/',
+    authPath: () => store.state.isLoggedIn ? '/auth/signOut' : '/auth/login',
+    authBtnName: () => store.state.isLoggedIn ? 'Kijelentkezés' : 'Bejelentkezés'
   }
 })
 </script>

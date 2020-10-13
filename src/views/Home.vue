@@ -16,8 +16,8 @@ export default Vue.extend({
     Feed
   },
   mounted: () => {
-    if (store.state.isLoggedIn) {
-      window.location.assign(router.resolve({ path: '/home' }).href)
+    if (!store.state.isLoggedIn) {
+      window.location.assign(router.resolve({ path: '/auth/login' }).href)
     }
   }
 })
@@ -26,5 +26,6 @@ export default Vue.extend({
 <style>
   .home {
     display: flex;
+    padding-top: 0.5rem;
   }
 </style>

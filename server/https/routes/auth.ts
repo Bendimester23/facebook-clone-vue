@@ -8,7 +8,7 @@ import jwt from 'jsonwebtoken';
 import verify from './private';
 
 const regSchema = Joi.object( {
-    username: Joi.string()
+    name: Joi.string()
         .min(6)
         .max(255)
         .required(),
@@ -49,49 +49,47 @@ router.get('/', (req,res) => {
     res.status(200).send('auth working.');
 });
 
-router.get('/register', async (req,res) => {
+router.post('/register', async (req,res) => {
     res.setHeader('Access-Control-Allow-Origin','*');
 
     regSchema.validate(req.query)
     .catch(err => {
         res.status(400).send(err.toString());
-        console.timeEnd('reg');
         return;
     });
 
     const salt = await crypt.genSalt(10);
 
     let user = new User({
-        name: req.query.username,
+        name: req.query.name,
         email: req.query.email,
         password: await crypt.hash('' + req.query.password,salt),
         prefferedTheme: true,
         groups: []
     })
 
-    const nameExist = await User.exists({name: req.query.username});
+    const nameExist = await User.exists({name: req.query.name});
     if (nameExist) {
         try {
             res.json({
                 status: "error",
-                error: "Already registered!"
+                error: "Error: Already registered!"
             });
-        } catch (error) {
-        }
+        } catch (error) {}
         return;
     }
 
     try {
         const saved = await user.save();
         try {
-            res.status(200).send(saved);
+            res.status(200).send('Succes!');
         } catch (error) {
         }
         return;
     }catch (err) {
         console.error(err);
         try {
-            res.send("Err: IDK");
+            res.send("Error: IDK");
         } catch (error) {
         }
         return;

@@ -2,8 +2,9 @@
   <v-container style="max-width: 400px !important;">
       <v-layout align-center/>
       <h1 class="login-text">Regisztráció</h1>
-      <v-form class="input_f_login" v-model="valid" ref="form">
+      <v-form class="input_f_login" v-model="valid" ref="form" :v-if="showForm">
         <v-text-field
+              ref="usernameFR"
               label="Teljes Név"
               v-model="name"
               :rules="nameRules"
@@ -11,13 +12,14 @@
               required
             ></v-text-field>
         <v-text-field
+            ref="emailFR"
             v-model="email"
             :rules="emailRules"
             label="E-mail cím"
             required
           ></v-text-field>
         <v-text-field
-            ref="pass1"
+            ref="passwordFR"
             v-model="password"
             :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
             :rules="[rules.required, rules.min, rules.match]"
@@ -31,63 +33,98 @@
         <v-btn
             color="success"
             class="mr-4"
-            @click="validate"
+            @click="click"
             >
-          Bejelentkezés
+          Regisztráció
           </v-btn>
 
           <v-btn
       color="warning"
-      @click="resetValidation"
+      @click="login"
     >
-      Mégsem
+      Bejelentkezés
     </v-btn>
       </v-form>
+      <v-alert
+        ref="sAl"
+        border="left"
+        color="green"
+        dismissible
+        elevation="8"
+        outlined
+        text
+        :value=false
+        transition="v-slide-x-transition"
+        type="success"
+      ></v-alert>
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import router from '@/router'
+import { register } from '@/api/auth'
 
 export default Vue.extend({
   name: 'SignIn',
   data: () => ({
     show1: false,
-    show2: true,
+    password: '',
     rules: {
-      required: value => !!value || 'Szükséges.',
-      min: v => v.length >= 8 || 'Legalább 8 karakter'
+      required: (v: string) => !!v || 'Szükséges.',
+      min: (v: string) => v.length >= 8 || 'Legalább 8 karakter'
     },
     valid: true,
     name: '',
     nameRules: [
-      v => !!v || 'Name is required',
-      v => (v && v.length >= 8) || 'Legalább 8 karakter'
+      (v: string) => !!v || 'Name is required',
+      (v: string) => v.length >= 8 || 'Legalább 8 karakter'
     ],
     email: '',
     emailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
+      (v: string) => !!v || 'E-mail is required',
+      (v: string) => /.+@.+\..+/.test(v) || 'E-mail must be valid'
     ],
-    select: null,
-    items: [
-      'Item 1',
-      'Item 2',
-      'Item 3',
-      'Item 4'
-    ],
-    checkbox: false
+    showAlert: false,
+    showForm: true
   }),
-  methods: {
-    validate () {
-      this.$refs.form.validate()
+  computed: {
+    form (): Vue & { validate: () => boolean } & { reset: () => void } & { resetValidation: () => void } {
+      return this.$refs.form as Vue & { validate: () => boolean } & { reset: () => void } & { resetValidation: () => void }
     },
+    usernameFR (): Vue & { value: string } {
+      return this.$refs.usernameFR as Vue & { value: string }
+    },
+    passwordFR (): Vue & { value: string } {
+      return this.$refs.passwordFR as Vue & { value: string }
+    },
+    emailFR (): Vue & { value: string } {
+      return this.$refs.emailFR as Vue & { value: string }
+    },
+    sAl (): Vue & { value: boolean } {
+      return this.$refs.aAl as Vue & { value: boolean }
+    }
+  },
+  methods: {
     resetValidation () {
-      this.$refs.form.resetValidation()
-      this.$refs.form.reset()
+      this.form.resetValidation()
+    },
+    login () {
+      window.location.assign(router.resolve({ path: '/auth/login' }).href)
     },
     click () {
-      console.log('click')
+      this.form.validate()
+      register(this.usernameFR.value, this.emailFR.value, this.passwordFR.value)
+        .then((res) => {
+          if (res === 'Error') {
+            console.log('error')
+          } else {
+            this.showForm = false
+            setTimeout(() => {
+              window.location.assign(router.resolve({ path: '/auth/login' }).href)
+            }, 2000)
+          }
+        })
     }
   }
 })

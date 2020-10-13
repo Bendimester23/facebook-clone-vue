@@ -8,10 +8,11 @@ import cookies from '@/plugins/cookies'
 
 Vue.config.productionTip = false
 
+console.log(cookies)
+
 new Vue({
   router,
   vuetify,
-  cookies,
   store,
   render: h => h(App)
 }).$mount('#app')

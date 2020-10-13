@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "strict": true,
+    "strict": false,
     "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
@@ -11,8 +11,16 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
+    "strictFunctionTypes": false,
     "types": [
-      "webpack-env"
+      "webpack-env",
+      "vuetify",
+      "vue-cookies-ts"
+    ],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/vuetify/types",
+      "./node_modules/vue-cookies-ts/types"
     ],
     "paths": {
       "@/*": [

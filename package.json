@@ -15,6 +15,7 @@
     "vue": "^2.6.11",
     "vue-axios": "^3.0.1",
     "vue-cookies": "^1.7.4",
+    "vue-cookies-ts": "^1.5.19",
     "vue-router": "^3.2.0",
     "vuetify": "^2.2.11",
     "vuex": "^3.4.0"
