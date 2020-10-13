@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.c82300fe555d0dd5bd8e9729fd64aa86.js"
+  "/precache-manifest.738cf693ab7d8899e918e21bf776f9df.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "facebook-clone"});
