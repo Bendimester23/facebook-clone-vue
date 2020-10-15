@@ -27,6 +27,6 @@ jobs:
     - run: cd server 
     - run: npm ci
     - run: npm i -g typescript
-    - run: tsc ./server
+    - run: cd server & tsc
     - run: cd server & npm run build --if-present
     - run: cd server & npm test
