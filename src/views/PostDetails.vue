@@ -29,7 +29,6 @@ export default Vue.extend({
     fetchh () {
       getPost(router.currentRoute.params.id)
         .then((res: PostData) => {
-          console.log(res)
           this.title = res.title
           this.text = res.content
         })
