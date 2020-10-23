@@ -8,8 +8,9 @@ app.use(bodyParser.json())
 app.use(morgan("dev"));
 
 app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, auth-token");
+    console.log('Ip: ' + req.connection.remoteAddress);
+    res.header("Access-Control-Allow-Origin", "*"); 
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, auth-token, Access-Control-Allow-Origin");
     next();
   });
 
@@ -26,7 +27,7 @@ app.get('/', (req,res) => {
 });
 
 export default function start() {
-    app.listen(20004,() => {
+    app.listen(process.env.PORT || 20004, () => {
         console.log('[http] Server started!');
     });
 };

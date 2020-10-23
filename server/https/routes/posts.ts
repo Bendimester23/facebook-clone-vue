@@ -21,4 +21,15 @@ router.get('/post/:id', verify, async (req,res) => {
     res.status(200).send(post.toJSON());
 })
 
+router.get('/global', verify, async (req,res) => {
+    res.setHeader('Access-Control-Allow-Origin','*');
+
+    const posts = await Post.find({isGlobal: true});
+
+    if (posts.length == 0)
+        return res.status(404).send('Error: No posts!')
+    
+    res.status(200).send(posts);
+})
+
 export default router;

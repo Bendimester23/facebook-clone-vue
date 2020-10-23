@@ -98,10 +98,11 @@ router.post('/register', async (req,res) => {
 
 router.options('/login', async (req,res) => {
     res.header('Access-Control-Allow-Origin','*');
-    res.header("Access-Control-Allow-Methods", '*').send('');
+    res.header("Access-Control-Allow-Methods", 'Access-Control-Allow-Origin, auth-token, content-type').send('');
 })
 
 router.post('/login', async (req,res) => {
+    const ip = req.connection.remoteAddress;
     res.header('Access-Control-Allow-Origin','*');
 
     loginSchema.validate(req.query)
@@ -122,16 +123,16 @@ router.post('/login', async (req,res) => {
     const match = await crypt.compare(req.body.password,userRef.toObject().password);
 
     if (match) {
-        const token = jwt.sign({_id:userRef._id, date: Date.now()},process.env.TOKEN_SECRET);
+        const token = jwt.sign({_id:userRef._id, date: Date.now(), ip: ip},process.env.TOKEN_SECRET);
         res.header('auth-token',token).header('Access-Control-Allow-Origin','*').send(token);
     }else {
         res.status(403).send('WrongPassword');
     }
-
-    console.log(userRef);
 });
 
 router.post('/refresh', verify, async (req,res) => {
+    const ip = req.connection.remoteAddress;
+
     res.setHeader('Access-Control-Allow-Origin','*');
 
     refreshSchema.validate(req.query)
@@ -167,7 +168,7 @@ router.post('/refresh', verify, async (req,res) => {
         return;
     }
 
-    const token = jwt.sign({_id:userRef._id, date: Date.now()},process.env.TOKEN_SECRET);
+    const token = jwt.sign({_id:userRef._id, date: Date.now(), ip: ip}, process.env.TOKEN_SECRET);
     res.header('auth-token',token).send(token);
 })
 

@@ -94,7 +94,7 @@ export async function register (name: string, email: string, password: string): 
   }
   console.debug('Registered with name: ' + name)
 
-  alert('Regisztráció sikeres. Kérem jelentkezzen be!')
+  alert('Regisztráció sikeres. Kérlek jelentkezz be!')
 
   window.location.assign(router.resolve({ path: '/auth/login' }).href)
 

@@ -23,6 +23,7 @@ export default Vue.extend({
   methods: {
   },
   created () {
+    this.$vuetify.theme.dark = (this.$cookies.get('theme') === 'dark')
     store.commit('setTheme', this.$cookies.get('theme') === 'dark')
   }
 })

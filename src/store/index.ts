@@ -13,13 +13,16 @@ export default new Vuex.Store({
   state: {
     color: '#192a56',
     textColor: '#f5f6fa',
-    isLoggedIn: false
+    isLoggedIn: false,
+    dark: false
   },
   mutations: {
     setTheme (state, theme: boolean) {
       state.color = theme ? '#192a56' : '#00a8ff'
       state.textColor = theme ? '#f5f6fa' : '#2f3640'
+      state.dark = theme
       Vue.cookies.set('theme', theme ? 'dark' : 'light')
+      this.$vuetify.theme.dark = theme
     },
     setLoggedIn (state, loggedIn: boolean) {
       state.isLoggedIn = loggedIn
@@ -40,6 +43,9 @@ export default new Vuex.Store({
     },
     isLogged: state => {
       return state.isLoggedIn
+    },
+    isDark: state => {
+      return state.dark
     }
   }
 })

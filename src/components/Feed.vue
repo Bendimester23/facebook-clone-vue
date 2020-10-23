@@ -1,8 +1,8 @@
 <template>
-    <v-main class="feed-container">
-        <v-card v-for="post in posts" v-bind:key="post.id" max-width=600 v-on:click="clck(post.id)" class="post">
+    <v-main class="feed-container"  v-bind:class="{dark: isDark}">
+        <v-card v-for="post in posts" v-bind:key="post._id" max-width=600 v-on:click="clck(post._id)" class="post" :dark="isDark">
             <h1>{{post.title}}</h1>
-            <p>{{post.content}}</p>
+            <p>{{post.text}}</p>
         </v-card>
     </v-main>
 </template>
@@ -10,85 +10,14 @@
 <script lang="ts">
 import router from '@/router'
 import Vue from 'vue'
+import { fetchPosts } from '@/api/feed'
+import store from '@/store'
 export default Vue.extend({
   name: 'Feed',
   data: () => {
     return (
       {
-        asd: 'sad',
         posts: [
-          {
-            id: '5f817b7fdceefa94571d03a4',
-            author: 'asd',
-            title: 'Test',
-            content: 'gfhugfhogfhghjgjhgij'
-          },
-          {
-            id: '5f817bfedceefa94571d03a5',
-            author: 'asd2',
-            title: 'Test 2',
-            content: 'gfhugfhogfhghjgjhgij'
-          },
-          {
-            id: 'ghjgpko',
-            author: 'asd',
-            title: 'Test 3',
-            content: 'gfhugfhogfhghjgjhgij'
-          },
-          {
-            id: 'iklélké',
-            author: 'asd',
-            title: 'Test 4',
-            content: 'gfhugfhogfhghjgjhgij'
-          },
-          {
-            id: 'iuouio',
-            author: 'asd',
-            title: 'Test 5',
-            content: 'gfhugfhogfhghjgjhgij'
-          },
-          {
-            id: '4656',
-            author: 'asd',
-            title: 'Test 6',
-            content: 'gfhugfhogfhghjgjhgij'
-          },
-          {
-            id: '68768',
-            author: 'asd',
-            title: 'Test 30',
-            content: 'gfhugfhogfhghjgjhgij'
-          },
-          {
-            id: '46547',
-            author: 'asd',
-            title: 'Test 40',
-            content: 'gfhugfhogfhghjgjhgij'
-          },
-          {
-            id: '36457',
-            author: 'asd',
-            title: 'Test 50',
-            content: 'gfhugfhogfhghjgjhgij'
-          },
-          {
-            id: '49876956',
-            author: 'asd',
-            title: 'Test 60',
-            content: 'gfhugfhogfhghjgjhgij'
-          },
-          {
-            id: '79789',
-            author: 'asd',
-            title: 'Test 60',
-            content: 'gfhugfhogfhghjgjhgij'
-          },
-          {
-            id: '769879',
-            author: 'asd',
-            title: 'Test 60',
-            content: 'gfhugfhogfhghjgjhgij'
-          }
         ]
       }
     )
@@ -96,7 +25,19 @@ export default Vue.extend({
   methods: {
     clck: function (id: string) {
       window.location.href = router.resolve('/post/' + id).href
+    },
+    load () {
+      fetchPosts()
+        .then((res) => {
+          this.posts = res
+        })
     }
+  },
+  computed: {
+    isDark: () => store.state.dark
+  },
+  mounted () {
+    this.load()
   }
 })
 </script>
@@ -105,5 +46,9 @@ export default Vue.extend({
   .post {
     left: 50%;
     transform: translate(-50%,5px);
+  }
+
+  .bg-dark {
+    background-color: #1E1E1E;
   }
 </style>

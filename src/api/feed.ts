@@ -1,8 +1,22 @@
 import { getToken } from './auth'
-export const API_URL = 'https://node1.limecraft.net:20004'
+export const API_URL = 'http://192.168.0.15:20004' // 'https://secret-tor-52036.herokuapp.com'
 
-export function fetchPosts (uid: string): PostData[] {
-  return []
+export async function fetchPosts (): Promise<PostData[]> {
+  const globalPost = await fetch(API_URL + '/api/posts/global', {
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/json',
+      'auth-token': getToken()
+    }
+  })
+
+  const res = await globalPost.text()
+
+  if (res.startsWith('Error')) {
+    return []
+  }
+
+  return JSON.parse(res)
 }
 
 export class PostData {
@@ -29,8 +43,6 @@ export async function getPost (id: string): Promise<PostData> {
   })
 
   const respp = await resp.text()
-
-  console.log(respp)
 
   if (respp.startsWith('Error') || respp.startsWith('Acce')) {
     return new PostData(id, 'Error', 'Error getting post!', new Date(Date.now()))

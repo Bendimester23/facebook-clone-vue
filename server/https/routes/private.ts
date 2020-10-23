@@ -7,6 +7,12 @@ export default function verify(req, res, next: NextFunction) {
 
     try {
         const verified : any = jwt.verify(token, process.env.TOKEN_SECRET);
+
+        const ip = req.connection.remoteAddress;
+
+        if (ip != verified.ip) {
+            return res.status(403).send("Error: Acces Denied: Wrong ip!");
+        }
         
         let expire : number = verified.date+300000;
         if (expire < Date.now()) {
