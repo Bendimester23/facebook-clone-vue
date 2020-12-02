@@ -1,9 +1,17 @@
 <template>
-    <v-main class="feed-container"  v-bind:class="{dark: isDark}">
-        <v-card v-for="post in posts" v-bind:key="post._id" max-width=600 v-on:click="clck(post._id)" class="post" :dark="isDark">
-            <h1>{{post.title}}</h1>
-            <p>{{post.text}}</p>
-        </v-card>
+    <v-main class="feed-container"  v-bind:class="{dark: isDark}" ref="postc">
+      <v-virtual-scroll
+        :items="posts"
+        :item-height="80"
+        :height="calcH()"
+      >
+        <template v-slot:default="{ item }">
+          <v-card max-width=600 v-on:click="clck(item._id)" class="post" :dark="isDark">
+              <h1>{{item.title}}</h1>
+              <p>{{item.text}}</p>
+          </v-card>
+        </template>
+      </v-virtual-scroll>
     </v-main>
 </template>
 
@@ -17,6 +25,8 @@ export default Vue.extend({
   data: () => {
     return (
       {
+        windowWidth: 0,
+        windowHeight: 0,
         posts: [
         ]
       }
@@ -31,13 +41,35 @@ export default Vue.extend({
         .then((res) => {
           this.posts = res
         })
+    },
+    calcH () {
+      return this.windowHeight - 187
+    },
+    getWindowWidth (event) {
+      this.windowWidth = document.documentElement.clientWidth
+    },
+    getWindowHeight (event) {
+      this.windowHeight = document.documentElement.clientHeight
     }
   },
   computed: {
     isDark: () => store.state.dark
   },
   mounted () {
+    this.$nextTick(function () {
+      window.addEventListener('resize', this.getWindowWidth)
+      window.addEventListener('resize', this.getWindowHeight)
+
+      this.getWindowWidth()
+      this.getWindowHeight()
+    })
+  },
+  created () {
     this.load()
+  },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.getWindowWidth)
+    window.removeEventListener('resize', this.getWindowHeight)
   }
 })
 </script>

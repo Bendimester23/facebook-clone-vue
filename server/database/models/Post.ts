@@ -8,12 +8,12 @@ const postSchema = new mongoose.Schema({
         max: 255,
         required: true
     },
-    id: {
+    /*id: {
         type: ObjectId,
         min: 6,
         max: 255,
         required: true
-    },
+    },*/
     isGlobal: {
         type: Boolean,
         required: true

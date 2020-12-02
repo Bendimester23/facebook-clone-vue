@@ -22,7 +22,7 @@ export default new Vuex.Store({
       state.textColor = theme ? '#f5f6fa' : '#2f3640'
       state.dark = theme
       Vue.cookies.set('theme', theme ? 'dark' : 'light')
-      this.$vuetify.theme.dark = theme
+      // this.$vuetify.theme.dark = theme
     },
     setLoggedIn (state, loggedIn: boolean) {
       state.isLoggedIn = loggedIn

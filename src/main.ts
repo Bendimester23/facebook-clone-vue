@@ -8,7 +8,7 @@ import cookies from '@/plugins/cookies'
 
 Vue.config.productionTip = false
 
-console.log(cookies)
+cookies.version.bold()
 
 new Vue({
   router,

@@ -1,5 +1,5 @@
-import { getToken } from './auth'
-export const API_URL = 'http://192.168.0.15:20004' // 'https://secret-tor-52036.herokuapp.com'
+import { getToken, signOut } from './auth'
+export const API_URL = 'http://46.139.50.88:20004' // 'https://secret-tor-52036.herokuapp.com'
 
 export async function fetchPosts (): Promise<PostData[]> {
   const globalPost = await fetch(API_URL + '/api/posts/global', {
@@ -9,6 +9,12 @@ export async function fetchPosts (): Promise<PostData[]> {
       'auth-token': getToken()
     }
   })
+
+  if (globalPost.status === 403) {
+    signOut()
+    alert('Hiba történt!')
+    return []
+  }
 
   const res = await globalPost.text()
 
@@ -51,4 +57,17 @@ export async function getPost (id: string): Promise<PostData> {
   const res = JSON.parse(respp)
 
   return new PostData(res._id, res.title, res.text, new Date(Date.now()))
+}
+
+export async function doPost (data: PostData): Promise<string> {
+  const resp = await fetch(API_URL + '/api/posts/create', {
+    method: 'post',
+    body: JSON.stringify(data),
+    headers: {
+      'Content-Type': 'application/json',
+      'auth-token': getToken()
+    }
+  })
+  console.log(resp)
+  return 'error'
 }

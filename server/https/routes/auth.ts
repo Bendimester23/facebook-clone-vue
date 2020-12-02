@@ -106,10 +106,10 @@ router.post('/login', async (req,res) => {
     res.header('Access-Control-Allow-Origin','*');
 
     loginSchema.validate(req.query)
-    .catch(err => {
-        res.status(400).send(err.toString());
-        return;
-    });
+    //.catch(err => {
+    //    res.status(400).send(err.toString());
+    //    return;
+    //});
 
     let userRef = await User.findOne({name: req.query.username});
 
@@ -131,15 +131,13 @@ router.post('/login', async (req,res) => {
 });
 
 router.post('/refresh', verify, async (req,res) => {
-    const ip = req.connection.remoteAddress;
-
     res.setHeader('Access-Control-Allow-Origin','*');
 
-    refreshSchema.validate(req.query)
-    .catch(err => {
+    const {err} = refreshSchema.validate(req.query)
+    if (err) {
         res.status(400).send(err.toString());
         return;
-    });
+    }
 
     const userData : any = jwt.verify(req.header('auth-token'), process.env.TOKEN_SECRET);
 
@@ -168,7 +166,7 @@ router.post('/refresh', verify, async (req,res) => {
         return;
     }
 
-    const token = jwt.sign({_id:userRef._id, date: Date.now(), ip: ip}, process.env.TOKEN_SECRET);
+    const token = jwt.sign({_id:userRef._id, date: Date.now()}, process.env.TOKEN_SECRET);
     res.header('auth-token',token).send(token);
 })
 

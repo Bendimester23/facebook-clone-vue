@@ -20,6 +20,15 @@
     </router-link>
 
       <v-spacer></v-spacer>
+      <router-link to="/home/post" v-if="isLogged">
+      <v-btn
+        elevation="6"
+        outlined
+        raised
+        text
+        class="cPost"
+      >Poszt készítése</v-btn>
+    </router-link>
       <router-link :to="authPath">
       <v-btn
         text
@@ -48,7 +57,8 @@ export default Vue.extend({
     textColor: () => store.state.textColor,
     homePath: () => store.state.isLoggedIn ? '/home' : '/',
     authPath: () => store.state.isLoggedIn ? '/auth/signOut' : '/auth/login',
-    authBtnName: () => store.state.isLoggedIn ? 'Kijelentkezés' : 'Bejelentkezés'
+    authBtnName: () => store.state.isLoggedIn ? 'Kijelentkezés' : 'Bejelentkezés',
+    isLogged: () => store.state.isLoggedIn
   }
 })
 </script>
@@ -59,5 +69,9 @@ export default Vue.extend({
     color: #f5f6fa;
     padding-top: 15px;
     font-size: 35px;
+  }
+
+  .cPost {
+    padding-right: 30px;
   }
 </style>
